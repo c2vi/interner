@@ -148,6 +148,25 @@ where
     }
 }
 
+impl<S> SharedPool<Vec<String>, S>
+where
+    S: BuildHasher,
+{
+    /// Returns a copy of an existing [`SharedVecString`] if one is found. Otherwise,
+    /// a new [`SharedVecString`] is created and returned.
+    ///
+    /// While any copies of the returned [`SharedVecString`] are still allocated,
+    /// calling this function is guaranteed to return a copy of the same buffer.
+    #[must_use]
+    pub fn get<'a, V>(&self, value: V) -> SharedBuffer<S>
+    where
+        V: Into<Cow<'a, [String]>>,
+    {
+        let value = value.into();
+        self.with_active_symbols(|symbols| symbols.get(value, self))
+    }
+}
+
 impl<T, S> Clone for SharedPool<T, S>
 where
     T: Poolable + Debug + Clone + Eq + PartialEq + Hash + Ord + PartialOrd,
