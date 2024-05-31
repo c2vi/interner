@@ -158,7 +158,7 @@ where
     /// While any copies of the returned [`SharedVecString`] are still allocated,
     /// calling this function is guaranteed to return a copy of the same buffer.
     #[must_use]
-    pub fn get<'a, V>(&self, value: V) -> SharedBuffer<S>
+    pub fn get<'a, V>(&self, value: V) -> SharedVecString<S>
     where
         V: Into<Cow<'a, [String]>>,
     {

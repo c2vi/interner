@@ -49,9 +49,12 @@ impl Poolable for Vec<u8> {
 }
 
 impl Poolable for Vec<String> {
+    //type Boxed = Box<[Box<str>]>;
     type Boxed = Box<[String]>;
 
     fn boxed(self) -> Self::Boxed {
+        //self.into_iter().map(AsRef::as_ref).collect::<Vec<Box<str>>>().into_boxed_slice()
+        //self.into_iter().map(|v| v.into()).collect::<Vec<_>>().into_boxed_slice()
         self.into_boxed_slice()
     }
 }
@@ -125,6 +128,16 @@ where
     S: BuildHasher,
 {
     fn borrow(&self) -> &[u8] {
+        &self.0.value
+    }
+}
+
+impl<P, S> Borrow<[String]> for SharedData<P, S>
+where
+    P: PoolKind<S, Pooled = Box<[String]>>,
+    S: BuildHasher,
+{
+    fn borrow(&self) -> &[String] {
         &self.0.value
     }
 }
