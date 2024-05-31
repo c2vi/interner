@@ -48,6 +48,14 @@ impl Poolable for Vec<u8> {
     }
 }
 
+impl Poolable for Vec<String> {
+    type Boxed = Box<[String]>;
+
+    fn boxed(self) -> Self::Boxed {
+        self.into_boxed_slice()
+    }
+}
+
 #[derive(Debug)]
 pub struct SharedData<P, S>(pub Arc<Data<P, S>>)
 where
