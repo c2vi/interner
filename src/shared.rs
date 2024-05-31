@@ -15,6 +15,8 @@ pub type SharedString<S = RandomState> = Pooled<SharedPool<String, S>, S>;
 pub type SharedPath<S = RandomState> = Pooled<SharedPool<PathBuf, S>, S>;
 /// A pooled buffer that belongs to a [`BufferPool`].
 pub type SharedBuffer<S = RandomState> = Pooled<SharedPool<Vec<u8>, S>, S>;
+/// A pooled Vec of Strings that belongs to a [`BufferPool`].
+pub type SharedVecString<S = RandomState> = Pooled<SharedPool<Vec<String>, S>, S>;
 
 /// A string interning pool that manages [`SharedString`]s.
 ///
@@ -31,6 +33,10 @@ pub type PathPool<S = RandomState> = SharedPool<PathBuf, S>;
 /// Each [`BufferPool`] has its own storage. When comparing [`SharedBuffer`]s
 /// from separate pools, the full string comparison function must be used.
 pub type BufferPool<S = RandomState> = SharedPool<Vec<u8>, S>;
+
+/// Each [`BufferPool`] has its own storage. When comparing [`SharedBuffer`]s
+/// from separate pools, the full string comparison function must be used.
+pub type VecStringPool<S = RandomState> = SharedPool<Vec<String>, S>;
 
 /// A shared pool of values that ensures only one copy of any given value exists
 /// at any time.
